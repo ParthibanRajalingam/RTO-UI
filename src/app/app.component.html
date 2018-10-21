@@ -1,0 +1,62 @@
+<div class="page-wrap">
+
+	<!-- Nav -->
+	<nav id="nav">
+		<ul>
+			<li><a routerLink="home" routerLinkActive="active"><span class="icon fa-home"></span></a></li>
+			<li><a routerLink="searchResults" routerLinkActive="active"><span class="icon fa-camera-retro"></span></a></li>
+			<li><a routerLink="developerProfile" routerLinkActive="active"><span class="icon fa-file-text-o"></span></a></li>
+		</ul>
+	</nav>
+<!-- Main -->
+	<section id="main">
+<router-outlet></router-outlet>
+		<!-- Contact -->
+		<section id="contact" class="mat-typography">
+
+			<div class="social column">
+				<h3>About Us</h3>
+				<p>The Motor Vehicles Department has been established under section 213(1) of the Motor Vehicles Act, 1988. This is a central
+					act applicable throughout the country. Motor vehicle department is responsible for enforcing various provisions of this
+					act. This department is headed by the Transport Commissioner.</p>
+				<p>Every state and city have their own RTO (Regional Transport Office). Every R.T.O is responsible to carry out the functions
+					and activities that are laid out in Motor Vehicles Act, 1988.</p>
+				<h3>Follow Us</h3>
+				<ul class="icons">
+					<li><a href="#" class="icon fa-twitter"><span class="label">Twitter</span></a></li>
+					<li><a href="#" class="icon fa-facebook"><span class="label">Facebook</span></a></li>
+					<li><a href="#" class="icon fa-instagram"><span class="label">Instagram</span></a></li>
+				</ul>
+			</div>
+
+
+			<div class="column">
+				<h3>Get in Touch</h3>
+				<form action="#" method="post">
+					<div class="field half first">
+						<label for="name">Name</label>
+						<input name="name" id="name" type="text" placeholder="Name">
+					</div>
+					<div class="field half">
+						<label for="email">Email</label>
+						<input name="email" id="email" type="email" placeholder="Email">
+					</div>
+					<div class="field">
+						<label for="message">Message</label>
+						<textarea name="message" id="message" rows="6" placeholder="Message"></textarea>
+					</div>
+					<ul class="actions">
+						<li><input value="Send Message" class="button" type="submit"></li>
+					</ul>
+				</form>
+			</div>
+
+		</section>
+		<!-- Footer -->
+		<footer id="footer">
+			<div class="copyright">
+				&copy; <a href="/">rtodetails.com</a>. Developed By: <a href="/">Harsh</a> and <a href="/">Parth</a>.
+			</div>
+		</footer>
+	</section>
+</div>

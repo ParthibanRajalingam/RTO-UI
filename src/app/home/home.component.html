@@ -1,0 +1,95 @@
+
+
+		<!-- Banner -->
+		<section id="banner">
+			<div class="inner">
+				<h1 >Get your 'RTO' Info</h1>
+
+				<p >"A one stop solution to get your RTO details"</p>
+
+
+
+
+				<div class="s01">
+					<form>
+						<fieldset>
+
+							<div *ngIf=nameFlag>
+								<legend>Currently Discovering the Amazing Details Using State and District names</legend>
+								<a class="anchor" (click)="onToggle()">Use Code number instead.</a>
+							</div>
+
+
+							<div *ngIf=codeFlag>
+								<legend >Currently Discovering the Amazing Details Using Code Number </legend>
+								<a class="anchor"  (click)="onToggle()">Use State and District names instead.</a>
+							</div>
+						</fieldset>
+
+
+
+
+						<div class="inner-form" *ngIf=nameFlag>
+							<div class="input-field first-wrap">
+
+								<form [formGroup]="stateForm">
+									<input type="text" matInput placeholder="Enter the state name" formControlName="stateGroup" required [matAutocomplete]="autoGroup">
+									<mat-autocomplete #autoGroup="matAutocomplete">
+										<mat-optgroup *ngFor="let group of stateGroupOptions | async" [label]="group.letter">
+											<mat-option *ngFor="let name of group.names" [value]="name">
+												{{name}}
+											</mat-option>
+										</mat-optgroup>
+									</mat-autocomplete>
+								</form>
+
+
+							</div>
+							<div class="input-field second-wrap">
+								<form [formGroup]="stateForm">
+									<input type="text" matInput placeholder="District name" formControlName="stateGroup" required [matAutocomplete]="autoGroup">
+									<mat-autocomplete #autoGroup="matAutocomplete">
+										<mat-optgroup *ngFor="let group of stateGroupOptions | async" [label]="group.letter">
+											<mat-option *ngFor="let name of group.names" [value]="name">
+												{{name}}
+											</mat-option>
+										</mat-optgroup>
+									</mat-autocomplete>
+								</form>
+							</div>
+							<div class="input-field third-wrap">
+								<button class="btn-search" type="button">Search</button>
+							</div>
+						</div>
+
+
+
+						<div class="inner-form" *ngIf=codeFlag>
+							<div class="input-field first-wrap">
+
+								<form [formGroup]="stateForm">
+									<input type="text" matInput placeholder="State Code (Eg: TN007)" formControlName="stateGroup" required [matAutocomplete]="autoGroup">
+									<mat-autocomplete #autoGroup="matAutocomplete">
+										<mat-optgroup *ngFor="let group of stateGroupOptions | async" [label]="group.letter">
+											<mat-option *ngFor="let name of group.names" [value]="name">
+												{{name}}
+											</mat-option>
+										</mat-optgroup>
+									</mat-autocomplete>
+								</form>
+
+
+							</div>
+
+							<div class="input-field third-wrap">
+								<button class="btn-search" type="button">Search</button>
+							</div>
+						</div>
+
+
+
+					</form>
+				</div>
+			</div>
+		</section>
+	
