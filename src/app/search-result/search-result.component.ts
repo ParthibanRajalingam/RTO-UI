@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { HttpCallsService } from '../http-calls.service'
 
 @Component({
   selector: 'app-search-result',
@@ -7,9 +8,18 @@ import { Component, OnInit } from '@angular/core';
 })
 export class SearchResultComponent implements OnInit {
 panelOpenState = false;
-  constructor() { }
+searchResults : any;
+  constructor( private httpRequests : HttpCallsService) { }
 
   ngOnInit() {
+
+    this.httpRequests.getSearchResults(45).subscribe(
+      result =>{
+        console.log(result);
+        this.searchResults=result;
+      } 
+    )
+
   }
 
 }

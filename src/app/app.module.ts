@@ -13,6 +13,9 @@ import { HomeComponent } from './home/home.component';
 import {  APP_ROUTES } from './app.route';
 import { RouterModule, Routes } from '@angular/router';
 import { DeveloperProfileComponent } from './developer-profile/developer-profile.component';
+import { HttpCallsService } from './http-calls.service'
+import { HttpModule } from '@angular/http';
+import {NgxPaginationModule} from 'ngx-pagination';
 
 @NgModule({
   declarations: [
@@ -26,9 +29,9 @@ import { DeveloperProfileComponent } from './developer-profile/developer-profile
       ,{ useHash: true }
      ),
     BrowserModule,MatAutocompleteModule,FormsModule, ReactiveFormsModule,MatFormFieldModule,
-    MatInputModule,BrowserAnimationsModule,MatExpansionModule,MatCardModule
+    MatInputModule,BrowserAnimationsModule,MatExpansionModule,MatCardModule,HttpModule,NgxPaginationModule
   ],
-  providers: [],
+  providers: [HttpCallsService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
