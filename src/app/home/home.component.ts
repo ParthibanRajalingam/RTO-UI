@@ -7,13 +7,15 @@ import { HttpCallsService } from '../http-calls.service'
 
 export interface StateGroup {
   letter: string;
-  names: string[];
+  values: any;
 }
 
-export const _filter = (opt: string[], value: string): string[] => {
+export const _filter = (opt: any, value: string): any[] => {
   const filterValue = value.toLowerCase();
 
-  return opt.filter(item => item.toLowerCase().indexOf(filterValue) === 0);
+  return opt.filter(item =>{
+   return (item.Name).toLowerCase().indexOf(filterValue) === 0;
+  }) ;
 };
 
 
@@ -34,85 +36,38 @@ export class HomeComponent implements OnInit {
 
   stateGroups: StateGroup[] = [{
     letter: 'A',
-    names: ['Alabama', 'Alaska', 'Arizona', 'Arkansas']
+    values: [{"Id":1,"Name":"Tamil Nadu"}]
   }, {
     letter: 'C',
-    names: ['California', 'Colorado', 'Connecticut']
-  }, {
-    letter: 'D',
-    names: ['Delaware']
-  }, {
-    letter: 'F',
-    names: ['Florida']
-  }, {
-    letter: 'G',
-    names: ['Georgia']
-  }, {
-    letter: 'H',
-    names: ['Hawaii']
-  }, {
-    letter: 'I',
-    names: ['Idaho', 'Illinois', 'Indiana', 'Iowa']
-  }, {
-    letter: 'K',
-    names: ['Kansas', 'Kentucky']
-  }, {
-    letter: 'L',
-    names: ['Louisiana']
-  }, {
-    letter: 'M',
-    names: ['Maine', 'Maryland', 'Massachusetts', 'Michigan',
-      'Minnesota', 'Mississippi', 'Missouri', 'Montana']
-  }, {
-    letter: 'N',
-    names: ['Nebraska', 'Nevada', 'New Hampshire', 'New Jersey',
-      'New Mexico', 'New York', 'North Carolina', 'North Dakota']
-  }, {
-    letter: 'O',
-    names: ['Ohio', 'Oklahoma', 'Oregon']
-  }, {
-    letter: 'P',
-    names: ['Pennsylvania']
-  }, {
-    letter: 'R',
-    names: ['Rhode Island']
-  }, {
-    letter: 'S',
-    names: ['South Carolina', 'South Dakota']
-  }, {
-    letter: 'T',
-    names: ['Tennessee', 'Texas']
-  }, {
-    letter: 'U',
-    names: ['Utah']
-  }, {
-    letter: 'V',
-    names: ['Vermont', 'Virginia']
-  }, {
-    letter: 'W',
-    names: ['Washington', 'West Virginia', 'Wisconsin', 'Wyoming']
+    values: [{"Id":2,"Name":"Andhra"}]
   }];
 
   stateGroupOptions: Observable<StateGroup[]>;
-  StatesList: any;
+  rawStatesList: any;
 
   constructor(private fb: FormBuilder,private httpRequests : HttpCallsService ) {
-    this.httpRequests.getState().subscribe(
-      data => {
-        console.log(data);
-        this.group(data);
-        this.loadDistricts(45);
-      }
-    )
+ 
 
   }
 
  ngOnInit() {
 
+      this.httpRequests.getState().subscribe(
+      data => {
+        console.log(data);
+        this.rawStatesList=data;
+        this.stateGroups= this.group(data);
+        this.stateGroups= this.group(data);
+        this.loadDistricts(45);
+      }
+    );
+
     this.stateGroupOptions = this.stateForm.get('stateGroup')!.valueChanges
       .pipe(
         startWith(''),
-        map(value => this._filterGroup(value))
+        map(value => 
+        this._filterGroup(value)
+        )
       );
        this.nameFlag=true;
        this.codeFlag=false;
@@ -122,8 +77,8 @@ export class HomeComponent implements OnInit {
     if (value) {
       console.log(value);
       return this.stateGroups
-        .map(group => ({letter: group.letter, names: _filter(group.names, value)}))
-        .filter(group => group.names.length > 0);
+        .map(group => ({letter: group.letter, values: _filter(group.values, value)}))
+        .filter(group => group.values.length > 0);
     }
 
     return this.stateGroups;
@@ -141,10 +96,10 @@ export class HomeComponent implements OnInit {
     )
   }
 
- async group(data){
+  group(data){
   var byName = data.slice(0);
   console.log('b4 Sorting......'+JSON.stringify(byName));
- await byName.sort(function(a,b) {
+  byName.sort(function(a,b) {
    console.log('sorting.....');
 	var x = a.Name.toLowerCase();
 	var y = b.Name.toLowerCase();
@@ -155,7 +110,7 @@ console.log('after Sorting......'+JSON.stringify(byName));
   var letter  = (byName[0].Name).charAt(0);
      var values = [];
      var i =0;
-  await byName.forEach(element => {
+   byName.forEach(element => {
     console.log('Grouping.....'+letter);
     if(letter == (element.Name).charAt(0)){
         values.push(element);
@@ -177,7 +132,15 @@ console.log('after Sorting......'+JSON.stringify(byName));
         'values' : values
       }
       dataGroup.push(lastElement);
+      this.stateGroups=[{
+    letter: 'D',
+    values: ['Alabama', 'Alaska', 'Arizona', 'Arkansas']
+  }, {
+    letter: 'E',
+    values: ['California', 'Colorado', 'Connecticut']
+  }];
   console.log(dataGroup);
+  return dataGroup;
 }
 
 }

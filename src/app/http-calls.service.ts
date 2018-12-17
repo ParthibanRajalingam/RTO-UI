@@ -1,30 +1,30 @@
 import { Injectable } from '@angular/core';
-import { Http,Response,Headers } from '@angular/http';
+import { Response,Headers } from '@angular/http';
+import {HttpClient} from "@angular/common/http";
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { envUrl } from './config/env.config'
+import { api } from './config/api.config'
 
 @Injectable({
   providedIn: 'root'
 })
 export class HttpCallsService {
 
-booksBaseUrl:string='https://openlibrary.org/searchjson?';
-  booksDefaultUrl:string='http://openlibrary.org/search.json?title=murder';
- imageBaseUrl:string='https://covers.openlibrary.org/b/olid/';
- tempUrl : string='http://192.168.1.4/api/values/';
-dat :any;
+ tempUrl : String= envUrl; //Setting env URL here
  
-  constructor(private http:Http) { }
+  constructor(private http:HttpClient) { }
  getState(){
-   return this.http.get(this.tempUrl+'states').pipe(map((response: Response) =>response.json()));
+   return this.http.get(this.tempUrl+api.getStates);
 }
 
 getDistrict(id){
-return this.http.get(this.tempUrl+'districts/'+id).pipe(map((response: Response) =>response.json()));
+return this.http.get(this.tempUrl+api.getDistricts+id);
 }
 
 getSearchResults(id){
-return this.http.get(this.tempUrl+'regdata/'+id).pipe(map((response: Response) =>response.json()));
+  console.log(JSON.stringify(api))
+return this.http.get(this.tempUrl+api.getSearchResults+id);
 }
 
 }

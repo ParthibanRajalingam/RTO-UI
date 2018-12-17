@@ -8,16 +8,21 @@ import { HttpCallsService } from '../http-calls.service'
 })
 export class SearchResultComponent implements OnInit {
 panelOpenState = false;
-searchResults : any;
+searchResults : any =[];
+error : string = "loading...";
   constructor( private httpRequests : HttpCallsService) { }
 
   ngOnInit() {
 
-    this.httpRequests.getSearchResults(45).subscribe(
+    this.httpRequests.getSearchResults('tn46').subscribe(
       result =>{
-        console.log(result);
+        
         this.searchResults=result;
-      } 
+        console.log('Search Resultsss'+this.searchResults);
+      },(err) => {
+        console.log('error in get search Results'+err);
+        this.error='error--'+JSON.stringify(err);
+      }
     )
 
   }

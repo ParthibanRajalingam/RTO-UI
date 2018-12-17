@@ -15,7 +15,10 @@ import { RouterModule, Routes } from '@angular/router';
 import { DeveloperProfileComponent } from './developer-profile/developer-profile.component';
 import { HttpCallsService } from './http-calls.service'
 import { HttpModule } from '@angular/http';
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import {NgxPaginationModule} from 'ngx-pagination';
+import { errorInterceptor }from './errorInterceptor'
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -29,9 +32,13 @@ import {NgxPaginationModule} from 'ngx-pagination';
       ,{ useHash: true }
      ),
     BrowserModule,MatAutocompleteModule,FormsModule, ReactiveFormsModule,MatFormFieldModule,
+    HttpClientModule,
     MatInputModule,BrowserAnimationsModule,MatExpansionModule,MatCardModule,HttpModule,NgxPaginationModule
   ],
-  providers: [HttpCallsService],
+  providers: [
+    { provide: HTTP_INTERCEPTORS, useClass: errorInterceptor, multi: true },
+    HttpCallsService
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
