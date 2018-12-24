@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import {FormControl} from '@angular/forms';
 import {FormBuilder, FormGroup} from '@angular/forms';
-import {Observable} from 'rxjs';
+import {Observable, of} from 'rxjs';
 import {map, startWith} from 'rxjs/operators';
-import { HttpCallsService } from '../http-calls.service'
+import { HttpCallsService } from '../http-calls.service';
+import { MatAutocompleteSelectedEvent } from '@angular/material';
 
 export interface StateGroup {
   letter: string;
@@ -34,33 +35,26 @@ export class HomeComponent implements OnInit {
 
 
 
-  stateGroups: StateGroup[] = [{
-    letter: 'A',
-    values: [{"Id":1,"Name":"Tamil Nadu"}]
-  }, {
-    letter: 'C',
-    values: [{"Id":2,"Name":"Andhra"}]
-  }];
+  stateGroups: StateGroup[];
 
   stateGroupOptions: Observable<StateGroup[]>;
   rawStatesList: any;
 
   constructor(private fb: FormBuilder,private httpRequests : HttpCallsService ) {
- 
-
-  }
-
- ngOnInit() {
-
-      this.httpRequests.getState().subscribe(
+         this.httpRequests.getState().subscribe(
       data => {
         console.log(data);
         this.rawStatesList=data;
         this.stateGroups= this.group(data);
-        this.stateGroups= this.group(data);
+        //this.stateGroupOptions = of(this.stateGroups);
         this.loadDistricts(45);
       }
     );
+
+
+  }
+
+ ngOnInit() {
 
     this.stateGroupOptions = this.stateForm.get('stateGroup')!.valueChanges
       .pipe(
@@ -89,6 +83,10 @@ export class HomeComponent implements OnInit {
     else{this.nameFlag=true;this.codeFlag=false;}
     
   }
+
+onStateSelected( ){
+ console.log('onStateSelected--'); //option value will be sent as event
+}
 
   loadDistricts(id){
     this.httpRequests.getDistrict(id).subscribe(

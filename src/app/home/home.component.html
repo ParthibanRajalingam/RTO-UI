@@ -15,7 +15,8 @@
 						<fieldset>
 
 							<div *ngIf=nameFlag>
-								<legend>Currently Discovering the Amazing Details Using State and District values</legend>
+								<legend>Currently Discovering the Amazing Details Using State and
+									 District valuesss{{stateGroups}}</legend>
 								<a class="anchor" (click)="onToggle()">Use Code number instead.</a>
 							</div>
 
@@ -24,6 +25,7 @@
 								<legend >Currently Discovering the Amazing Details Using Code Number </legend>
 								<a class="anchor"  (click)="onToggle()">Use State and District values instead.</a>
 							</div>
+
 						</fieldset>
 
 
@@ -32,11 +34,11 @@
 						<div class="inner-form" *ngIf=nameFlag>
 							<div class="input-field first-wrap">
 
-								<form [formGroup]="stateForm">
+								<form [formGroup]="stateForm" >
 									<input type="text" matInput placeholder="Enter the state name" formControlName="stateGroup" required [matAutocomplete]="autoGroup">
-									<mat-autocomplete #autoGroup="matAutocomplete">
+									<mat-autocomplete #autoGroup="matAutocomplete"  (optionSelected)="onStateSelected()">
 										<mat-optgroup *ngFor="let group of stateGroupOptions | async" [label]="group.letter">
-											<mat-option *ngFor="let name of group.values" [value]="name">
+											<mat-option *ngFor="let name of group.values" [value]="name.Name">
 												{{name.Name}}
 											</mat-option>
 										</mat-optgroup>
@@ -50,7 +52,7 @@
 									<input type="text" matInput placeholder="District name" formControlName="stateGroup" required [matAutocomplete]="autoGroup">
 									<mat-autocomplete #autoGroup="matAutocomplete">
 										<mat-optgroup *ngFor="let group of stateGroupOptions | async" [label]="group.letter">
-											<mat-option *ngFor="let name of group.values" [value]="name">
+											<mat-option *ngFor="let name of group.values" [value]="name.Name">
 												{{name.Name}}
 											</mat-option>
 										</mat-optgroup>
@@ -93,3 +95,6 @@
 			</div>
 		</section>
 	
+							<div *ngIf = "stateGroupOptions.length > 0">
+									<a>	Loading states..... </a>
+							</div>
