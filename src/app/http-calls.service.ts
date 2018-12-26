@@ -22,9 +22,9 @@ getDistrict(id){
 return this.http.get(this.tempUrl+api.getDistricts+id);
 }
 
-getSearchResults(id){
+getSearchResults(params){
   console.log(JSON.stringify(api))
-return this.http.get(this.tempUrl+api.getSearchResults+id);
+return this.http.get(this.tempUrl+api.getSearchResults+params);
 }
 
 }

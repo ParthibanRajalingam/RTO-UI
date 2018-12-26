@@ -6,7 +6,7 @@ import {map, startWith} from 'rxjs/operators';
 import { HttpCallsService } from '../http-calls.service';
 import { MatAutocompleteSelectedEvent } from '@angular/material';
 
-export interface StateGroup {
+export interface StateAndDistrictGroup {
   letter: string;
   values: any;
 }
@@ -28,26 +28,42 @@ export const _filter = (opt: any, value: string): any[] => {
 export class HomeComponent implements OnInit {
  nameFlag : boolean;
   codeFlag : boolean;
+  districtBoxDisabled : boolean = true;
+  stateId : String;
+  districtId : String;
  
-  stateForm: FormGroup = this.fb.group({
+  stateForm: FormGroup = this.stateFb.group({
     stateGroup: '',
+  });
+
+   districtForm: FormGroup = this.districtFb.group({
+    districtGroup: '',
+  });
+
+   stateCode: FormGroup = this.stateCodeFb.group({
+    stateCode: '',
   });
 
 
 
-  stateGroups: StateGroup[];
+  stateGroups: StateAndDistrictGroup[] =[];
+  districtGroups :StateAndDistrictGroup[]=[];
 
-  stateGroupOptions: Observable<StateGroup[]>;
-  rawStatesList: any;
+  stateGroupOptions: Observable<StateAndDistrictGroup[]>;
+  districtGroupOptions: Observable<StateAndDistrictGroup[]>;
 
-  constructor(private fb: FormBuilder,private httpRequests : HttpCallsService ) {
+
+  constructor(private stateFb: FormBuilder,
+  private districtFb: FormBuilder,private stateCodeFb: FormBuilder,
+  private httpRequests : HttpCallsService ) {
+
+         this.districtForm.get('districtGroup').disable();
+         this.districtBoxDisabled = true;
          this.httpRequests.getState().subscribe(
       data => {
         console.log(data);
-        this.rawStatesList=data;
         this.stateGroups= this.group(data);
-        //this.stateGroupOptions = of(this.stateGroups);
-        this.loadDistricts(45);
+        this.stateForm.get('stateGroup').enable();
       }
     );
 
@@ -60,16 +76,24 @@ export class HomeComponent implements OnInit {
       .pipe(
         startWith(''),
         map(value => 
-        this._filterGroup(value)
+        this._filterStateGroup(value)
         )
       );
+
+      this.districtGroupOptions = this.districtForm.get('districtGroup')!.valueChanges
+      .pipe(
+        startWith(''),
+        map(value => 
+        this._filterDistrictGroup(value)
+        )
+      );
+ 
        this.nameFlag=true;
        this.codeFlag=false;
   }
 
-  private _filterGroup(value: string): StateGroup[] {
+  private _filterStateGroup(value: string): StateAndDistrictGroup[] {
     if (value) {
-      console.log(value);
       return this.stateGroups
         .map(group => ({letter: group.letter, values: _filter(group.values, value)}))
         .filter(group => group.values.length > 0);
@@ -78,20 +102,64 @@ export class HomeComponent implements OnInit {
     return this.stateGroups;
   }
 
+    private _filterDistrictGroup(value: string): StateAndDistrictGroup[] {
+    if (value) {
+      return this.districtGroups
+        .map(group => ({letter: group.letter, values: _filter(group.values, value)}))
+        .filter(group => group.values.length > 0);
+    }
+
+    return this.districtGroups;
+  }
+
   onToggle(){
     if(this.nameFlag == true){this.nameFlag=false;this.codeFlag=true;}
     else{this.nameFlag=true;this.codeFlag=false;}
     
   }
 
-onStateSelected( ){
- console.log('onStateSelected--'); //option value will be sent as event
+setDistrictId(disId){
+this.districtId = disId;
 }
 
-  loadDistricts(id){
-    this.httpRequests.getDistrict(id).subscribe(
-      data => console.log(data)
-    )
+onSearchSD(){
+  //alert(this.stateId +'----'+this.districtId);
+  let param ='';
+  if(this.stateId && this.districtId){
+   param= 'districtid='+this.districtId+'&stateId='+this.stateId;
+  }
+  else if(this.stateId){
+    param = 'stateId='+this.stateId;
+  }
+  else{
+    alert("Please select any");
+    return;
+  }
+
+   this.httpRequests.getSearchResults(param).subscribe(
+      data => {
+        console.log('Searched..................');
+        console.log(data);
+      }
+    );
+  
+}
+
+onSearchRegCode(regcode){
+
+}
+
+  loadDistricts(stateId){
+    this.stateId = stateId;
+      this.httpRequests.getDistrict(stateId).subscribe(
+      data => {
+        console.log(data);
+        this.districtGroups= this.group(data);
+        this.districtForm.get('districtGroup').enable();
+        this.districtBoxDisabled = false;
+      }
+    );
+
   }
 
   group(data){
@@ -130,13 +198,6 @@ console.log('after Sorting......'+JSON.stringify(byName));
         'values' : values
       }
       dataGroup.push(lastElement);
-      this.stateGroups=[{
-    letter: 'D',
-    values: ['Alabama', 'Alaska', 'Arizona', 'Arkansas']
-  }, {
-    letter: 'E',
-    values: ['California', 'Colorado', 'Connecticut']
-  }];
   console.log(dataGroup);
   return dataGroup;
 }

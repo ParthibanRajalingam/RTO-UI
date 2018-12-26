@@ -16,7 +16,7 @@
 
 							<div *ngIf=nameFlag>
 								<legend>Currently Discovering the Amazing Details Using State and
-									 District valuesss{{stateGroups}}</legend>
+									 District values</legend>
 								<a class="anchor" (click)="onToggle()">Use Code number instead.</a>
 							</div>
 
@@ -35,10 +35,12 @@
 							<div class="input-field first-wrap">
 
 								<form [formGroup]="stateForm" >
-									<input type="text" matInput placeholder="Enter the state name" formControlName="stateGroup" required [matAutocomplete]="autoGroup">
-									<mat-autocomplete #autoGroup="matAutocomplete"  (optionSelected)="onStateSelected()">
+									<input type="text" matInput placeholder="Enter the state name" formControlName="stateGroup"
+									 required [matAutocomplete]="autoGroup">
+									<mat-autocomplete #autoGroup="matAutocomplete">
 										<mat-optgroup *ngFor="let group of stateGroupOptions | async" [label]="group.letter">
-											<mat-option *ngFor="let name of group.values" [value]="name.Name">
+											<mat-option *ngFor="let name of group.values" [value]="name.Name" 
+											(onSelectionChange)="loadDistricts(name.Id)">
 												{{name.Name}}
 											</mat-option>
 										</mat-optgroup>
@@ -48,11 +50,15 @@
 
 							</div>
 							<div class="input-field second-wrap">
-								<form [formGroup]="stateForm">
-									<input type="text" matInput placeholder="District name" formControlName="stateGroup" required [matAutocomplete]="autoGroup">
-									<mat-autocomplete #autoGroup="matAutocomplete">
-										<mat-optgroup *ngFor="let group of stateGroupOptions | async" [label]="group.letter">
-											<mat-option *ngFor="let name of group.values" [value]="name.Name">
+								<form [formGroup]="districtForm">
+									<input type="text" matInput placeholder="District name" formControlName="districtGroup" required 
+									[matAutocomplete]="districtGroup" 
+									[style.background]="districtBoxDisabled ? '#E9EDF0': 'white'">
+									
+									<mat-autocomplete #districtGroup="matAutocomplete">
+										<mat-optgroup *ngFor="let group of districtGroupOptions | async" [label]="group.letter">
+											<mat-option *ngFor="let name of group.values" [value]="name.Name" 
+											(onSelectionChange)="setDistrictId(name.Id)">
 												{{name.Name}}
 											</mat-option>
 										</mat-optgroup>
@@ -60,7 +66,8 @@
 								</form>
 							</div>
 							<div class="input-field third-wrap">
-								<button class="btn-search" type="button">Search</button>
+								<button class="btn-search" type="button" 
+								(click)="onSearchSD()">Search</button>
 							</div>
 						</div>
 
@@ -69,9 +76,10 @@
 						<div class="inner-form" *ngIf=codeFlag>
 							<div class="input-field first-wrap">
 
-								<form [formGroup]="stateForm">
-									<input type="text" matInput placeholder="State Code (Eg: TN007)" formControlName="stateGroup" required [matAutocomplete]="autoGroup">
-									<mat-autocomplete #autoGroup="matAutocomplete">
+								<form [formGroup]="stateCode">
+									<input type="text" matInput placeholder="State Code (Eg: TN007)" formControlName="stateCode" 
+									required [matAutocomplete]="stateCodeGroup">
+									<mat-autocomplete #stateCodeGroup="matAutocomplete">
 										<mat-optgroup *ngFor="let group of stateGroupOptions | async" [label]="group.letter">
 											<mat-option *ngFor="let name of group.values" [value]="name">
 												{{name.Name}}
@@ -94,7 +102,3 @@
 				</div>
 			</div>
 		</section>
-	
-							<div *ngIf = "stateGroupOptions.length > 0">
-									<a>	Loading states..... </a>
-							</div>
