@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpCallsService } from '../http-calls.service'
+import { SearchResultsService } from '../search-results.service';
 
 @Component({
   selector: 'app-search-result',
@@ -10,11 +11,18 @@ export class SearchResultComponent implements OnInit {
 panelOpenState = false;
 searchResults : any =[];
 error : string = "loading...";
-  constructor( private httpRequests : HttpCallsService) { }
+  constructor( private httpRequests : HttpCallsService , private searchResult : SearchResultsService) { }
 
   ngOnInit() {
 
-    this.httpRequests.getSearchResults('tn46').subscribe(
+    this.searchResults = this.searchResult.getOption();
+
+    if(!this.searchResults.length){
+      this.error = 'No data Found';
+    }
+
+    /*
+    this.httpRequests.getSearchResults('stateId=1').subscribe(
       result =>{
         
         this.searchResults=result;
@@ -24,6 +32,7 @@ error : string = "loading...";
         this.error='error--'+JSON.stringify(err);
       }
     )
+    */
 
   }
 

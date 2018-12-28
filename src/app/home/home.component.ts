@@ -4,7 +4,9 @@ import {FormBuilder, FormGroup} from '@angular/forms';
 import {Observable, of} from 'rxjs';
 import {map, startWith} from 'rxjs/operators';
 import { HttpCallsService } from '../http-calls.service';
+import { SearchResultsService } from '../search-results.service'
 import { MatAutocompleteSelectedEvent } from '@angular/material';
+import { Router } from '@angular/router';
 
 export interface StateAndDistrictGroup {
   letter: string;
@@ -55,7 +57,8 @@ export class HomeComponent implements OnInit {
 
   constructor(private stateFb: FormBuilder,
   private districtFb: FormBuilder,private stateCodeFb: FormBuilder,
-  private httpRequests : HttpCallsService ) {
+  private httpRequests : HttpCallsService,private searchResult : SearchResultsService,
+  private router: Router ) {
 
          this.districtForm.get('districtGroup').disable();
          this.districtBoxDisabled = true;
@@ -140,6 +143,8 @@ onSearchSD(){
       data => {
         console.log('Searched..................');
         console.log(data);
+        this.searchResult.setOption(data);
+         this.router.navigate(['/searchResults']);
       }
     );
   
