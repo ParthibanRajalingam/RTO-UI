@@ -27,4 +27,5 @@ getSearchResults(params){
 return this.http.get(this.tempUrl+api.getSearchResults+params);
 }
 
+
 }

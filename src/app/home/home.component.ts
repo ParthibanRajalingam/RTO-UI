@@ -122,14 +122,14 @@ export class HomeComponent implements OnInit {
   }
 
 setDistrictId(disId){
-this.districtId = disId;
+this.districtId = disId.trim();
 }
 
 onSearchSD(){
-  //alert(this.stateId +'----'+this.districtId);
+  alert(this.stateId +'----'+this.districtId);
   let param ='';
   if(this.stateId && this.districtId){
-   param= 'districtid='+this.districtId+'&stateId='+this.stateId;
+   param= 'districtname='+this.districtId+'&stateId='+this.stateId;
   }
   else if(this.stateId){
     param = 'stateId='+this.stateId;

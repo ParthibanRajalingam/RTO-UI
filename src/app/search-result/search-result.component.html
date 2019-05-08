@@ -1,45 +1,40 @@
-<div class="container" *ngIf = "searchResults.length >0; else noStates">
-<mat-card class="card">
+<div class="container" *ngIf = "searchResults.length >0; else noStates" style="width :75%; margin : 0 12.5% 0 12.5% ">
+<mat-card class="card" >
 
-  <mat-accordion >
+  <mat-accordion style="width : 500px">
   <mat-expansion-panel [disabled]="true">
     <mat-expansion-panel-header>
-      <mat-panel-title>
-        <b>State Name</b>
-      </mat-panel-title>
+
       <mat-panel-description>
         State Code
       </mat-panel-description>
       <mat-panel-description>
-        Region
+        District Name
       </mat-panel-description>
-       <mat-panel-description>
-        Office
-      </mat-panel-description>
+
     </mat-expansion-panel-header>
 
  This the expansion 1 content
   </mat-expansion-panel>
   </mat-accordion>  
 
-<mat-accordion *ngFor="let result of searchResults  | paginate: { itemsPerPage: 10, currentPage: p }">
+<mat-accordion *ngFor="let result of searchResults  | paginate: { itemsPerPage: 10, currentPage: p }" style="width : 500px">
   <mat-expansion-panel>
     <mat-expansion-panel-header>
-      <mat-panel-title>
-        {{result.StateName}}
-      </mat-panel-title>
+  
       <mat-panel-description>
          {{result.StateCode}}
       </mat-panel-description>
       <mat-panel-description>
-         {{result.Region}}
+         {{result.DistrictName }}
       </mat-panel-description>
-       <mat-panel-description>
-         {{result.Office}}
-      </mat-panel-description>
+  
     </mat-expansion-panel-header>
 
-  <p>Address : {{result.Address}}</p>
+   <p>Office Name  : {{result.Office}}</p>
+  <p>Address : {{result.Address}},</p>
+  <p style="margin-left:60px">{{result.Region}},</p>
+  <p style="margin-left:60px">{{result.StateName}}</p>
   <p>EmailId : {{result.EmailId}}</p>
   <p>Mobile  : {{result.ContactNumber}}</p>
   </mat-expansion-panel>
